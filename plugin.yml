@@ -1,0 +1,23 @@
+name: PickaxeSellPlus
+author: T0X1C
+version: 1.0
+main: me.t0x1c.pickaxesellplus.Main
+commands:
+    pick:
+        description: Enable/Disable PickaxeSell
+
+permissions:
+    pick.sell:
+        default: op
+
+    pick.bypass.cooldown:
+        default: op
+
+    pick.reload:
+        default: op
+
+    pick.staff:
+        default: op
+
+    pick.cooldown:
+        default: op
