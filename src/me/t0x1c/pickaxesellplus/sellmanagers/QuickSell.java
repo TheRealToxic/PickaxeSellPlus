@@ -13,7 +13,7 @@ public class QuickSell {
 	public void sellItems(final Player p) {
 		Shop shop = Shop.getHighestShop(p);
 		if(shop != null) {
-			if(pl.getConfig().getBoolean("Settings.Cooldown") == false) {
+			if(!pl.getConfig().getBoolean("Settings.Cooldown")) {
 				shop.sellall(p, "");
 			} else {
 				shop.sellall(p, "");

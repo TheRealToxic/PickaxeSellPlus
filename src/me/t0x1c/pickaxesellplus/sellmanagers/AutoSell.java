@@ -21,13 +21,13 @@ public class AutoSell {
         SellResponse response = SellHandler.sellInventory(p, shop);
         switch(response.getResponseType()) {
         case FAIL_NO_ITEMS:
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.NoBlocks")));
+            p.sendMessage(colorThis(pl.getConfig().getString("Messages.NoBlocks")));
             break;
         case FAIL_NO_SHOP:
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.NoShop")));
+            p.sendMessage(colorThis(pl.getConfig().getString("Messages.NoShop")));
             break;
         case SUCCESS:
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.Success").replaceAll("%items%", String.valueOf(response.getItemsSold())).replaceAll("%amount%", String.valueOf(response.getPrice()))));
+            p.sendMessage(colorThis(pl.getConfig().getString("Messages.Success").replaceAll("%items%", String.valueOf(response.getItemsSold())).replaceAll("%amount%", String.valueOf(response.getPrice()))));
             if(!pl.getConfig().getBoolean("Settings.Cooldown")) {
             	SellHandler.sellInventory(p, shop);
 				break;
@@ -56,4 +56,8 @@ public class AutoSell {
             break;  
         }      
     }
+	
+	String colorThis(String text) {
+		return ChatColor.translateAlternateColorCodes('&', text);
+	}
 }

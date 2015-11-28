@@ -12,33 +12,33 @@ CooldownTime: 4
 #All the messages is stored here
 Messages:
   #When the console tries to execute any commands
-  OnlyPlayers: "&4&lERROR&7: Only players can execute these commands!"
+  OnlyPlayers: "&2PickaxeSell&a+ &8> &4Error: Only players can execute these commands!"
   #This message will show when a player activates.
-  Enabled: "&a&lSUCCESS&7: Enabled PickaxeSell!"
+  Enabled: "&2PickaxeSell&a+ &8> &aSucces: Enabled PickaxeSell!"
   #This message will show when a player deactivates.
-  Disabled: "&e&lWARNING&7: Disabled PickaxeSell!"
+  Disabled: "&2PickaxeSell&a+ &8> &eWarning: Disabled PickaxeSell!"
   #This message will show when a player reloads config.yml.
-  Reload: "&a&lSUCCESS&7: Reloaded config.yml!"
+  Reload: "&2PickaxeSell&a+ &8> &aSuccess: Reloaded config.yml!"
   #This message will show when a player doesn't have permissions
-  No-Permissions: "&4&lERROR&7: You dont have permissions!"
+  No-Permissions: "&2PickaxeSell&a+ &8> &4Error: You dont have permissions!"
   #This message will show when a player have disabled PickaxeSell.
-  You-Have-Disabled: "&4&lERROR&7: You have disabled PickaxeSell!"
+  You-Have-Disabled: "&2PickaxeSell&a+ &8> &4Error: You have disabled PickaxeSell!"
   #This message will show when a player needs to wait.
-  Time-Left: "&4&lERROR&7: You must wait &6%time &7second(s)"
+  Time-Left: "&2PickaxeSell&a+ &8> &4Error: You must wait &6%time &7second(s)"
   #This message will show when a player types in /pick cooldown.
-  Wrong-Cooldown-Command: "&4&lERROR&7: /pick cooldown check or /pick cooldown on/off!"
+  Wrong-Cooldown-Command: "&2PickaxeSell&a+ &8> &4Error: /pick cooldown check!"
   #This message will show when a player checks if cooldown if while cooldown is off.
-  Cooldown-False: "&6&lSTATUS&7: Cooldown is &4&lOFF"
+  Cooldown-False: "&2PickaxeSell&a+ &8> &6Status: Cooldown is &4&lOFF"
   #This message will show when a player checks if cooldown if while cooldown is on.
-  Cooldown-True: "&6&lSTATUS&7: Cooldown is &a&lON"
+  Cooldown-True: "&2PickaxeSell&a+ &8> &6Status: Cooldown is &a&lON"
   
   #AutoSell messages
   #When you try to sell 0 blocks
-  NoBlocks: "&4&lERROR&7: You dont have any blocks that could be sold!"
+  NoBlocks: "&2PickaxeSell&a+ &8> &4Error: You dont have any blocks that could be sold!"
   #When you don't have a shop to sell to
-  NoShop: "&4&lERROR&7: You dont have any shops to sell to!"
+  NoShop: "&2PickaxeSell&a+ &8> &4Error: You dont have any shops to sell to!"
   #When you successfully sold items
-  Success: "&a&lSUCCESS&7: You sold %items% items and earned &a$&7%amount%"
+  Success: "&2PickaxeSell&a+ &8> &aSuccess: You sold %items% items and earned &a$&7%amount%"
 
 Settings:
   #If this is not enabled the plugin will automatically use QuickSell

@@ -35,11 +35,11 @@ public class Main extends JavaPlugin {
 		}
 	}
 	
-	public void loadCommand() {
+	void loadCommand() {
 		getCommand("pick").setExecutor(new PickCommand(this));
 	}
 	
-	public void loadEvent() {
+	void loadEvent() {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new SellEvent(this), this);
 		pm.registerEvents(new JoinEvent(this), this);

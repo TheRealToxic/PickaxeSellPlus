@@ -36,25 +36,31 @@ public class SellEvent implements Listener {
 					}
 				}
 				if(!p.hasPermission("pick.sell")) {
-					p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.No-Permissions")));
+					p.sendMessage(colorThis(pl.getConfig().getString("Messages.No-Permissions")));
 					return;
 				}
 				if(pl.cooldownTime.containsKey(p)) {
-				    p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.Time-Left").replaceAll("%time", String.valueOf(pl.cooldownTime.get(p)))));
+				    p.sendMessage(colorThis(pl.getConfig().getString("Messages.Time-Left").replaceAll("%time", String.valueOf(pl.cooldownTime.get(p)))));
 				    return;
 				}
 				if(!pl._players.contains(p)) {
-			        p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.You-Have-Disabled")));
+			        p.sendMessage(colorThis(pl.getConfig().getString("Messages.You-Have-Disabled")));
 			        return;
 				}
 				if(pl.getConfig().getBoolean("Settings.AutoSellHook")) {
 					as.sellPlayersItems(p);
-				} else if(!pl.getConfig().getBoolean("Settings.AutoSellHook")) {
+					return;
+				}
+				if(!pl.getConfig().getBoolean("Settings.AutoSellHook")) {
 					qs.sellItems(p);
 				}
 			}
 		} else {
 			return;
 		}
+	}
+	
+	String colorThis(String text) {
+		return ChatColor.translateAlternateColorCodes('&', text);
 	}
 }

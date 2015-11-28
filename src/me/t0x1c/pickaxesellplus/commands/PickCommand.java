@@ -11,14 +11,13 @@ import org.bukkit.entity.Player;
 public class PickCommand implements CommandExecutor {
 	
 	private final Main pl;
-
 	public PickCommand(Main pl) {
 		this.pl = pl;
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) {
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.OnlyPlayers")));
+			sender.sendMessage(colorThis(pl.getConfig().getString("Messages.OnlyPlayers")));
 			return true;
 		}
 		Player p = (Player) sender;
@@ -27,15 +26,16 @@ public class PickCommand implements CommandExecutor {
 				if(p.hasPermission("pick.sell")) {
 					if(!pl._players.contains(p)) {
 						pl._players.add(p);
-						p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.Enabled")));
-					} else if(pl._players.contains(p)) {
+						p.sendMessage(colorThis(pl.getConfig().getString("Messages.Enabled")));
+						return true;
+					}
+					if(pl._players.contains(p)) {
 						pl._players.remove(p);
-						p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.Disabled")));
+						p.sendMessage(colorThis(pl.getConfig().getString("Messages.Disabled")));
 						return true;
 					}
 				} else {
-					p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.No-Permissions")));
-					return true;
+					p.sendMessage(colorThis(pl.getConfig().getString("Messages.No-Permissions")));
 				}
 				return true;
 			}
@@ -53,35 +53,45 @@ public class PickCommand implements CommandExecutor {
 			        p.sendMessage(" ");
 			        p.sendMessage("§8§l§m--------------------------------------------");
 				} else if(!p.hasPermission("pick.staff")) {
-			        p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.No-Permissions")));
+			        p.sendMessage(colorThis(pl.getConfig().getString("Messages.No-Permissions")));
 				}
-			} else if(args[0].equalsIgnoreCase("reload")) {
+				return true;
+			}
+			if(args[0].equalsIgnoreCase("reload")) {
 				if(p.hasPermission("pick.reload")) {
 					pl.reloadConfig();
-			        p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.Reload")));
+			        p.sendMessage(colorThis(pl.getConfig().getString("Messages.Reload")));
 				} else if(!p.hasPermission("pick.reload")) {
-					p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.No-Permissions")));
+					p.sendMessage(colorThis(pl.getConfig().getString("Messages.No-Permissions")));
 				}
-			} else if(args[0].equalsIgnoreCase("cooldown")) {
+				return true;
+			}
+			if(args[0].equalsIgnoreCase("cooldown")) {
 				if(!p.hasPermission("pick.cooldown")) {
-					p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.No-Permissions")));
+					p.sendMessage(colorThis(pl.getConfig().getString("Messages.No-Permissions")));
 					return true;
 				}
 				if(args.length < 2) {
-					p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.Wrong-Cooldown-Command")));
+					p.sendMessage(colorThis(pl.getConfig().getString("Messages.Wrong-Cooldown-Command")));
 					return true;
 				}
 				if(args.length < 3) {
 					if(args[1].equalsIgnoreCase("check")) {
 						if(!pl.getConfig().getBoolean("Settings.Cooldown")) {
-							p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.Cooldown-False")));
-						} else if(pl.getConfig().getBoolean("Settings.Cooldown")) {
-							p.sendMessage(ChatColor.translateAlternateColorCodes('&', pl.getConfig().getString("Messages.Cooldown-True")));
+							p.sendMessage(colorThis(pl.getConfig().getString("Messages.Cooldown-False")));
+							return true;
+						}
+						if(pl.getConfig().getBoolean("Settings.Cooldown")) {
+							p.sendMessage(colorThis(pl.getConfig().getString("Messages.Cooldown-True")));
 						}
 					}
 				}
 			}
 	    }
 		return true;
+	}
+	
+	String colorThis(String text) {
+		return ChatColor.translateAlternateColorCodes('&', text);
 	}
 }
