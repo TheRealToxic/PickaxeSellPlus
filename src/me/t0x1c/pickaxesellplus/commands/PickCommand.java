@@ -1,6 +1,7 @@
 package me.t0x1c.pickaxesellplus.commands;
 
 import me.t0x1c.pickaxesellplus.Main;
+import me.t0x1c.pickaxesellplus.managers.FileManager;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -17,73 +18,68 @@ public class PickCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) {
-			sender.sendMessage(colorThis(pl.getConfig().getString("Messages.OnlyPlayers")));
+			sender.sendMessage(colorThis(pl.getConfig().getString("messages.only-players")));
 			return true;
 		}
-		Player p = (Player) sender;
+		Player player = (Player) sender;
 	    if(cmd.getName().equalsIgnoreCase("pick")) {
 			if(args.length == 0) {
-				if(p.hasPermission("pick.sell")) {
-					if(!pl._players.contains(p)) {
-						pl._players.add(p);
-						p.sendMessage(colorThis(pl.getConfig().getString("Messages.Enabled")));
+				if(player.hasPermission("pick.sell")) {
+					if(!FileManager.getPlayers().getBoolean("Players." + player.getName())) {
+						FileManager.getPlayers().set("Players." + player.getName(), true);
+						FileManager.savePlayers();
+						player.sendMessage(colorThis(pl.getConfig().getString("messages.enabled")));
 						return true;
 					}
-					if(pl._players.contains(p)) {
-						pl._players.remove(p);
-						p.sendMessage(colorThis(pl.getConfig().getString("Messages.Disabled")));
-						return true;
-					}
-				} else {
-					p.sendMessage(colorThis(pl.getConfig().getString("Messages.No-Permissions")));
+					FileManager.getPlayers().set("Players." + player.getName(), false);
+					FileManager.savePlayers();
+					player.sendMessage(colorThis(pl.getConfig().getString("messages.disabled")));
+					return true;
 				}
+				player.sendMessage(colorThis(pl.getConfig().getString("messages.no-permissions")));
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("help")) {
-				if(p.hasPermission("pick.staff")) {
-					p.sendMessage("§8§l§m--------------------------------------------");
-			        p.sendMessage(" ");
-			        p.sendMessage("§4§lPickaxeSell §8» §7§lCommands:");
-			        p.sendMessage("§c§l/pick §8- §7Disable or Enable PickaxeSell.");
-			        p.sendMessage("§c§l/pick reload §8- §7Reload config.yml.");
-			        p.sendMessage("§c§l/pick help §8- §7Displays this.");
-			        p.sendMessage("§c§l/pick cooldown check §8- §7Display if cooldown is on or off.");
-			        p.sendMessage("§c§l/pick cooldown on §8- §7Turn on cooldown.");
-			        p.sendMessage("§c§l/pick cooldown off §8- §7Turn off cooldown.");
-			        p.sendMessage(" ");
-			        p.sendMessage("§8§l§m--------------------------------------------");
-				} else if(!p.hasPermission("pick.staff")) {
-			        p.sendMessage(colorThis(pl.getConfig().getString("Messages.No-Permissions")));
+				if(player.hasPermission("pick.staff")) {
+					player.sendMessage(colorThis("&8&m--------------------------------------------"));
+			        player.sendMessage("");
+			        player.sendMessage(colorThis("&2PickaxeSell&a+ &8» &7Commands:"));
+			        player.sendMessage(colorThis("&a/pick &8- &7Disable or Enable PickaxeSell."));
+			        player.sendMessage(colorThis("&a/pick reload &8- &7Reload config.yml."));
+			        player.sendMessage(colorThis("&a/pick help &8- &7Displays this."));
+			        player.sendMessage(colorThis("&a/pick cooldown check &8- &7Display if cooldown is on or off."));
+			        player.sendMessage("");
+			        player.sendMessage(colorThis("&8&m--------------------------------------------"));
+			        return true;
 				}
-				return true;
+				player.sendMessage(colorThis(pl.getConfig().getString("messages.no-permissions")));
+			    return true;
 			}
 			if(args[0].equalsIgnoreCase("reload")) {
-				if(p.hasPermission("pick.reload")) {
+				if(player.hasPermission("pick.reload")) {
 					pl.reloadConfig();
-			        p.sendMessage(colorThis(pl.getConfig().getString("Messages.Reload")));
-				} else if(!p.hasPermission("pick.reload")) {
-					p.sendMessage(colorThis(pl.getConfig().getString("Messages.No-Permissions")));
+			        player.sendMessage(colorThis(pl.getConfig().getString("messages.reload")));
+			        return true;
 				}
+				player.sendMessage(colorThis(pl.getConfig().getString("messages.no-permissions")));
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("cooldown")) {
-				if(!p.hasPermission("pick.cooldown")) {
-					p.sendMessage(colorThis(pl.getConfig().getString("Messages.No-Permissions")));
+				if(!player.hasPermission("pick.cooldown")) {
+					player.sendMessage(colorThis(pl.getConfig().getString("messages.no-permissions")));
 					return true;
 				}
 				if(args.length < 2) {
-					p.sendMessage(colorThis(pl.getConfig().getString("Messages.Wrong-Cooldown-Command")));
+					player.sendMessage(colorThis(pl.getConfig().getString("messages.wrong-cooldown-command")));
 					return true;
 				}
 				if(args.length < 3) {
 					if(args[1].equalsIgnoreCase("check")) {
-						if(!pl.getConfig().getBoolean("Settings.Cooldown")) {
-							p.sendMessage(colorThis(pl.getConfig().getString("Messages.Cooldown-False")));
+						if(!pl.getConfig().getBoolean("settings.cooldown")) {
+							player.sendMessage(colorThis(pl.getConfig().getString("messages.cooldown-false")));
 							return true;
 						}
-						if(pl.getConfig().getBoolean("Settings.Cooldown")) {
-							p.sendMessage(colorThis(pl.getConfig().getString("Messages.Cooldown-True")));
-						}
+						player.sendMessage(colorThis(pl.getConfig().getString("messages.cooldown-true")));
 					}
 				}
 			}

@@ -1,9 +1,12 @@
 package me.t0x1c.pickaxesellplus.events;
 
+import me.mrCookieSlime.QuickSell.QuickSell;
 import me.t0x1c.pickaxesellplus.Main;
-import me.t0x1c.pickaxesellplus.sellmanagers.AutoSell;
-import me.t0x1c.pickaxesellplus.sellmanagers.QuickSell;
+import me.t0x1c.pickaxesellplus.managers.AutoS;
+import me.t0x1c.pickaxesellplus.managers.FileManager;
+import me.t0x1c.pickaxesellplus.managers.QuickS;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
@@ -17,8 +20,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class SellEvent implements Listener {
 	
-	AutoSell as = new AutoSell();
-	QuickSell qs = new QuickSell();
 	private final Main pl;
 	public SellEvent(Main pl) {
 		this.pl = pl;
@@ -26,40 +27,47 @@ public class SellEvent implements Listener {
 	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
-		final Player p = e.getPlayer();
+		final Player player = e.getPlayer();
+		AutoS as = new AutoS(pl);
+		QuickS qs = new QuickS(pl);
 		if((e.getAction() == Action.RIGHT_CLICK_AIR) || (e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
-			Material material = Material.matchMaterial(pl.getConfig().getString("Material"));
-			if(p.getItemInHand().getType() == material) {
+			Material material = Material.matchMaterial(pl.getConfig().getString("settings.material"));
+			if(player.getItemInHand().getType() == material) {
 				if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 					if((e.getClickedBlock().getState() instanceof Furnace) || (e.getClickedBlock().getState() instanceof Chest) || (e.getClickedBlock().getState() instanceof Sign) || (e.getClickedBlock().getType() == Material.ENDER_CHEST) || (e.getClickedBlock().getType() == Material.WORKBENCH)) {
 						return;
 					}
 				}
-				if(!p.hasPermission("pick.sell")) {
-					p.sendMessage(colorThis(pl.getConfig().getString("Messages.No-Permissions")));
+				if(!player.hasPermission("pick.sell")) {
+					player.sendMessage(colorThis(pl.getConfig().getString("messages.no-permissions")));
 					return;
 				}
-				if(pl.cooldownTime.containsKey(p)) {
-				    p.sendMessage(colorThis(pl.getConfig().getString("Messages.Time-Left").replaceAll("%time", String.valueOf(pl.cooldownTime.get(p)))));
+				if(pl._cooldown.containsKey(player)) {
+				    player.sendMessage(colorThis(pl.getConfig().getString("messages.time-left").replaceAll("%time", String.valueOf(pl._cooldown.get(player)))));
 				    return;
 				}
-				if(!pl._players.contains(p)) {
-			        p.sendMessage(colorThis(pl.getConfig().getString("Messages.You-Have-Disabled")));
+				if(!FileManager.getPlayers().getBoolean("Players." + player.getName())) {
+			        player.sendMessage(colorThis(pl.getConfig().getString("messages.you-have-disabled")));
 			        return;
 				}
-				if(pl.getConfig().getBoolean("Settings.AutoSellHook")) {
-					as.sellPlayersItems(p);
-					return;
+				if(pl.getConfig().getBoolean("settings.autosell-hook")) {
+					if(Bukkit.getPluginManager().isPluginEnabled("AutoSell")) {
+						as.sellItems(player);
+						return;
+					}
+					player.sendMessage(colorThis(pl.getConfig().getString("messages.no-autosell")));
 				}
-				if(!pl.getConfig().getBoolean("Settings.AutoSellHook")) {
-					qs.sellItems(p);
+				if(!pl.getConfig().getBoolean("settings.autosell-hook")) {
+					if(Bukkit.getPluginManager().isPluginEnabled(QuickSell.getInstance())) {
+						qs.sellItems(player);
+						return;
+					}
+					player.sendMessage(colorThis(pl.getConfig().getString("messages.no-quicksell")));
 				}
 			}
-		} else {
-			return;
 		}
 	}
-	
+
 	String colorThis(String text) {
 		return ChatColor.translateAlternateColorCodes('&', text);
 	}

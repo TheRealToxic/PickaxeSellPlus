@@ -1,6 +1,6 @@
 name: PickaxeSellPlus
 author: T0X1C
-version: 1.0
+version: 1.1
 main: me.t0x1c.pickaxesellplus.Main
 commands:
     pick:
